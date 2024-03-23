@@ -1,4 +1,4 @@
-class Solution {
+cclass Solution {
 public:
     int maxFrequencyElements(vector<int>& nums) {
         int sum=0;
@@ -7,12 +7,12 @@ public:
             mp[nums[i]]++;
         }
         int compare=-1;
-        for(unordered_map<int,int>::iterator it=mp.begin();it!=NULL;it++){
+        for(unordered_map<int,int>::iterator it=mp.begin();it!=mp.end();it++){
             if(it->second>compare){
                 compare=it->second;
             }
         }
-        for(unordered_map<int,int>::iterator it=mp.begin();it!=NULL;it++){
+        for(unordered_map<int,int>::iterator it=mp.begin();it!=mp.end();it++){
             if(it->second==compare){
                 sum+=compare;
             }
