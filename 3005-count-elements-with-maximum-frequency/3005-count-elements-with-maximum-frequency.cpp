@@ -7,13 +7,13 @@ public:
             mp[nums[i]]++;
         }
         int compare=-1;
-        for(auto i:mp){
-            if(i.second>compare){
-                compare=i.second;
+        for(unordered_map<int,int>::iterator it=mp.begin();it!=NULL;it++){
+            if(it->second>compare){
+                compare=it->second;
             }
         }
-        for(auto i:mp){
-            if(i.second==compare){
+        for(unordered_map<int,int>::iterator it=mp.begin();it!=NULL;it++){
+            if(it->second==compare){
                 sum+=compare;
             }
         }
