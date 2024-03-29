@@ -11,26 +11,33 @@
  */
 class Solution {
 public:
-    bool hasPathSum(TreeNode* root, int sum) {
-       if(root==NULL){
-        return false;
-       }
-       stack<pair<TreeNode*,int>>st;
-       st.push(pair<TreeNode*,int>(root,root->val));
-       while(!st.empty()){
-         pair<TreeNode*, int> tmp = st.top();
-        st.pop();
-        if(tmp.first->left==NULL&&tmp.first->right==NULL&&sum==tmp.second){
+    bool traversal(TreeNode* node,int count){
+        if(node->right==NULL&&node->left==NULL&&count==0){
             return true;
         }
-        //stack先進後出 先放右再放左
-        if(tmp.first->right){
-        st.push(pair<TreeNode*,int>(tmp.first->right,tmp.second+tmp.first->right->val));
+        if(node->right==NULL&&node->left==NULL&&count!=0){
+            return false;
         }
-        if(tmp.first->left){
-        st.push(pair<TreeNode*,int>(tmp.first->left,tmp.second+tmp.first->left->val));
+        if(node->left){
+            count-=node->left->val;
+            if(traversal(node->left,count)){
+                return true;
+            };
+            count+=node->left->val;
         }
-       }
-       return false;
+        if(node->right){
+            count-=node->right->val;
+            if(traversal(node->right,count)){
+                return true;
+            };
+            count+=node->right->val;
+        }
+        return false;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root==NULL){
+            return false;
+        }
+        return(traversal(root,targetSum-root->val));
     }
 };
