@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<vector<string>> result;
-    void backtracking(int n,int row,vector<string>&chessboard){
+    void backtracking(int n,int row,vector<string>chessboard){
         if(row==n){
         result.push_back(chessboard);
         return ;
@@ -14,7 +14,7 @@ public:
             }
         }
     }
-    bool isValid(int row,int col,vector<string>&chessboard,int n){
+    bool isValid(int row,int col,vector<string>chessboard,int n){
         for(int i=0;i<row;i++){//檢查座標上面有沒有Q
             if(chessboard[i][col]=='Q'){
                 return false;
