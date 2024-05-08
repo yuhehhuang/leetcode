@@ -36,7 +36,7 @@ public:
         }
                           }
         for(int i=0;i<score.size();i++){
-            ans[i]=map[score[i]];
+            ans[i]=find(score[i])->second;
         }  
         return ans;
     }
