@@ -18,7 +18,7 @@ public:
         }
         int left=traversal(cur->left);
         int right=traversal(cur->right);
-        if(left==2&&right==2){
+        if(left==2||right==2){
             return 0;
         }
         if(left==0||right==0){
