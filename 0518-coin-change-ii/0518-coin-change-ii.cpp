@@ -18,7 +18,13 @@ public:
                     dp[i][j]=dp[i-1][j];
                 }
                 else{
-                    //選coins[i]當最後一步的組合+(選coins[0] coins[1] .... coins[i-1]當最後一步的組合-->這些組合湊成j也表示不需要用到coins[i])
+                    //dp[i][j]=至少有一個coins[i]的方式組成背包(dp[i][j-coins[i]])+都沒有coins[i]的方式湊成背包(dp[i-1][j])
+//If we want to make change for N cents, and we have infinite supply of each of {S = S_1, S_2, ..., S_m} valued coins.
+//The set of solutions for this problem, C(N,m), can be partitioned into two sets.
+//There are those sets that do not contain any S_m and
+//Those sets that contain at least 1 S_m
+//Then we get recurence relation.
+//C(N, m) = C(N, m-1) + C(N - S_m, m)///////////
                     dp[i][j]=dp[i][j-coins[i]]+dp[i-1][j];
                 }
             }
