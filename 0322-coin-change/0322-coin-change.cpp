@@ -1,29 +1,15 @@
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        //min....
-        //dp[i][j]=不花coins[i](dp[i-1][j])的解and有花coins[i]的解去最小(dp[i][j])
-        sort(coins.begin(),coins.end());
-        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,amount+1));
-        for(int i=0;i<coins.size();i++){
-            dp[i][0]=0;
-        }
-        for(int j=1;j<amount+1;j++){
-            if(j%coins[0]==0){
-                dp[0][j]=j/coins[0];
+    vector<long>v(amount+1, INT_MAX);
+        v[0] = 0;
+        for(int j=0;j<amount+1;j++){
+            for(int i=0;i<coins.size();i++){
+                if(coins[i]<=j)
+                //min(v[j]->在背包為j的情況下用index 0~i-1的結果中最好的,用coins[j]的最佳解)
+                v[j]=min(v[j],v[j-coins[i]]+1);
             }
         }
-        for(int i=1;i<coins.size();i++){
-            for(int j=1;j<amount+1;j++){
-                if(coins[i]<=j){
-                    if(dp[i][j-coins[i]]!=amount+1){
-                        dp[i][j]=dp[i][j-coins[i]]+1;
-                    }
-                }
-                //此時min內的dp[i][j]表示我有用coins[i]的最小解拿來跟不用coins[i]的最小解比
-                    dp[i][j]=min(dp[i][j],dp[i-1][j]);
-            }
-        }
-        return dp[coins.size()-1][amount]==amount+1?-1:dp[coins.size()-1][amount];
+        return v[amount] == INT_MAX ? -1 : v[amount];
     }
 };
