@@ -16,9 +16,11 @@ public:
         for(int i=1;i<coins.size();i++){
             for(int j=1;j<amount+1;j++){
                 if(coins[i]<=j){
-                    dp[i][j]=min(dp[i-1][j],dp[i][j-coins[i]]+1);
+                    //dp[i][j]=
+                    dp[i][j]=dp[i][j-coins[i]]+1;
                 }
-                    dp[i][j]=dp[i-1][j];
+                //此時min內的dp[i][j]表示我有用coins[i]的最小解拿來跟不用coins[i]的最小解比
+                    dp[i][j]=min(dp[i][j],dp[i-1][j]);
             }
         }
         return dp[coins.size()-1][amount]==amount+1?-1:dp[coins.size()-1][amount];
