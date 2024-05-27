@@ -25,7 +25,7 @@ public:
         //中 處理
         //val1=偷 val2=不偷
         //[偷,不偷]
-        int val1=node->val+left[1]+right[1]
+        int val1=node->val+left[1]+right[1];
         int val2=max(left[0],left[1])+max(right[0],right[1]);
         return {val1,val2};
 
