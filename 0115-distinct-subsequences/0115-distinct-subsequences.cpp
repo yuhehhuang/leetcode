@@ -1,8 +1,9 @@
 class Solution {
 public:
     int numDistinct(string s, string t) {
-        //dp[i][j]: s:前三個物品 符合 t:背包大小
-        vector<vector<int>>dp(s.size()+1,vector<int>(t.size()+1,0));
+        //dp[i][j]: s:前i個(index:0~i)字母 符合 t:前j個字母的組合
+        //類似背包
+        vector<vector<unsigned int>>dp(s.size()+1,vector<unsigned int>(t.size()+1,0));
         for(int i=0;i<s.size();i++){
             dp[i][0]=1;//都不拿
         }
