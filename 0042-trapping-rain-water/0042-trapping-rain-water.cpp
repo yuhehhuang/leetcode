@@ -1,22 +1,33 @@
 class Solution {
 public:
-    int trap(vector<int>& height) {
-        if(height.size()<=2) return 0;
-        vector<int>Lheight(height.size(),0);
-        vector<int>Rheight(height.size(),0);
-        Lheight[0]=height[0];
-        Rheight[height.size()-1]=height[height.size()-1];
-        for(int i=1;i<height.size();i++){
-            Lheight[i]=max(Lheight[i-1],height[i]);
-        }
-        for(int j=height.size()-2;j>=0;j--){
-            Rheight[j]=max(Rheight[j+1],height[j]);
-        }
+    int trap(vector<int>& h) {
+        //st.top():裝水的高度
+        //i:st.top()的右壁
+        //st.pop()後 st.top()=裝水的高度的左壁
+        if(h.size()<=2) return 0;
+        stack<int>st;
+        st.push(0);
         int result=0;
-        for(int i=0;i<height.size();i++){
-            int count=min(Lheight[i],Rheight[i])-height[i];
-            if(count>0){
-                result+=count;
+        for(int i=1;i<h.size();i++){
+            if(h[i]<h[st.top()]){
+                st.push(i);
+            }
+            else if(h[i]==h[st.top()]){
+                continue;
+            }
+            else{
+                while(!st.empty()&&h[i]>h[st.top()]){
+                    int mid=st.top();
+                    st.pop();
+                    if(!st.empty()){
+                    int left=st.top();
+                    int right=i;
+                    int width=right-left-1;
+                    int len=min(h[left],h[right])-h[mid];
+                    result+=width*len;
+                    }
+                }
+                st.push(i);
             }
         }
         return result;
