@@ -16,7 +16,7 @@ public:
                 st.push(i);
             }
             else{
-                while(!st.empty()&&heights[i]<heights[st.top()]){
+                while(heights[i]<heights[st.top()]){
                     int mid=st.top();
                     st.pop();
                     if(!st.empty()){
