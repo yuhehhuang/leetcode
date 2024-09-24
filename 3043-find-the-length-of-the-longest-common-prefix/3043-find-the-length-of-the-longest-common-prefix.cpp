@@ -20,7 +20,9 @@ public:
             for(int j=0;j<arr2_x.length();j++){
                 prefix_2+=arr2_x[j];
                 if(mp.find(prefix_2)!=mp.end()){
-                    ans=max((int)prefix_2.size(),ans);
+                    if(prefix_2.length()>ans){
+                        ans=prefix_2.length();
+                    }
                 }
             }
         }
