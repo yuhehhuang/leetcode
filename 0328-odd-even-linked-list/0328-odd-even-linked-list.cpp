@@ -20,7 +20,7 @@ public:
         ListNode* copy=head;
         ListNode* copy2=head->next;
         ListNode* copy3=head->next;
-        while(copy->next!=NULL){
+        while(copy->next!=NULL&&copy2->next!=NULL){
             copy->next=copy->next->next;
             copy2->next=copy2->next->next;
             copy=copy->next;
