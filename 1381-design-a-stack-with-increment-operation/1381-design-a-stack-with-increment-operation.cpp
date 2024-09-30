@@ -11,8 +11,8 @@ public:
     
     void push(int x) {
         if(cnt<maxSize){
-            index=(index==0)?maxSize-1:index-1;
             vec[index]=x;
+            index++;
             cnt++;
             return;
         }
@@ -23,14 +23,14 @@ public:
         if(cnt==0){
             return -1;
         }
+        index--;
         int tmp=vec[index];
-        index=(index==maxSize-1)?0:index+1;
         cnt--;
         return tmp;
     }
     
     void increment(int k, int val) {
-        for(int i=maxSize-1;i>maxSize-1-min(k,cnt);i--){
+        for(int i=0;i<min(k,cnt);i++){
             vec[i]+=val;
         }
     }
