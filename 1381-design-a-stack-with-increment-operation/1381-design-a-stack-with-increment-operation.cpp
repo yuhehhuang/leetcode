@@ -3,15 +3,16 @@ public:
     int maxSize;
     int index=0;//頭元素index
     int cnt=0;//目前有幾個元素在stack
-    int arr[1000];
+    vector<int>vec;
     CustomStack(int maxSize) {
         this->maxSize=maxSize;
+        vec.resize(maxSize);
     }
     
     void push(int x) {
         if(cnt<maxSize){
             index=(index==0)?maxSize-1:index-1;
-            arr[index]=x;
+            vec[index]=x;
             cnt++;
             return;
         }
@@ -22,7 +23,7 @@ public:
         if(cnt==0){
             return -1;
         }
-        int tmp=arr[index];
+        int tmp=vec[index];
         index=(index==maxSize-1)?0:index+1;
         cnt--;
         return tmp;
@@ -30,7 +31,7 @@ public:
     
     void increment(int k, int val) {
         for(int i=maxSize-1;i>maxSize-1-min(k,cnt);i--){
-            arr[i]+=val;
+            vec[i]+=val;
         }
     }
 };
