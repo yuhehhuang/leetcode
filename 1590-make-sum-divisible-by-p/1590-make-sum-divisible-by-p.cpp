@@ -1,18 +1,19 @@
 class Solution {
 public:
     int minSubarray(vector<int>& nums, int p) {
-        int n=nums.size();
-        int totalSum=0;
-        for(int i=0;i<n;i++){
-            totalSum=(totalSum+nums[i])%p;
+        int totalsum=0;
+        for(int i=0;i<nums.size();i++){
+            totalsum=(totalsum+nums[i])%p;
         }
-        int target=totalSum%p;
-        if(target==0)return 0;
+        if(totalsum%p==0){
+            return 0;
+        }
+        int currentsum=0;
+        int target=totalsum%p;
+        int minLen=nums.size();
         unordered_map<int,int>mp;
         mp[0]=-1;
-        int currentsum=0;
-        int minLen=n;
-        for(int i=0;i<n;i++){
+        for(int i=0;i<nums.size();i++){
             currentsum=(currentsum+nums[i])%p;
             int needed=(currentsum-target+p)%p;
             if(mp.find(needed)!=mp.end()){
@@ -20,6 +21,7 @@ public:
             }
             mp[currentsum]=i;
         }
-        return minLen==n?-1:minLen;
+        return minLen==nums.size()?-1:minLen;
+
     }
 };
