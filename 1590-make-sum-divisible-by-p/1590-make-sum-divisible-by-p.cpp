@@ -12,7 +12,7 @@ public:
         int target=totalsum%p;
         int minLen=nums.size();
         unordered_map<int,int>mp;
-        mp[0]=-1;
+        mp[0]=-1;//處理剛好currentsumj整段去掉後陣列可以整除p
         for(int i=0;i<nums.size();i++){
             currentsum=(currentsum+nums[i])%p;
             int needed=(currentsum-target+p)%p;
