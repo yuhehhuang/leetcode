@@ -15,13 +15,13 @@ public:
         for(int i=0;i<s1.size();i++){
             s2_freq[s2[i]-'a']++;
         }
-        for(int i=0;i<=s2.size()-window_len;i++){
+        for(int i=0;i<s2.size()-window_len;i++){
             if(s1_freq==s2_freq){
                 return true;
             }
             s2_freq[s2[i]-'a']--;
             s2_freq[s2[i+window_len]-'a']++;
         }
-        return false;
+        return s1_freq==s2_freq;
     }
 };
