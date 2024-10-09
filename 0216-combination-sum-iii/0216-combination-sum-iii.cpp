@@ -16,6 +16,7 @@ public:
             sum-=i;
             path.pop_back();
         }
+        return ;
     }
     vector<vector<int>> combinationSum3(int k, int n) {
         backtracking(k,n,1,0);
