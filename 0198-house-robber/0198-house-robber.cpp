@@ -8,10 +8,10 @@ public:
         dp[0]=nums[0];
         dp[1]=max(nums[0],nums[1]);
         for(int i=2;i<nums.size();i++){
-            for(int j=0;j<i-1;j++){
-                dp[i]=max(dp[j]+nums[i],dp[i]);
-            }
+            //index 0~i的房子最多能偷的錢==dp[i]
+            //dp[i]=(不偷第i家的解 OR 偷第i家的解取)max
+            dp[i]=max(dp[i-1],dp[i-2]+nums[i]);
         }
-        return max(dp[nums.size()-1],dp[nums.size()-2]);
+        return dp[nums.size()-1];
     }
 };
