@@ -9,10 +9,7 @@ public:
         vector<vector<int>>dp(word1.size(),vector<int>(word2.size(),0));
         for(int i=0;i<word1.size();i++){
             if(word1[i]==word2[0]){
-                if(i==0);
-                else{
-                    dp[i][0]=i;
-                }
+                dp[i][0]=i;
             }
             else{
                 if(i==0){
@@ -37,6 +34,7 @@ public:
                     dp[i][j]=dp[i-1][j-1];
                 }
                 else{
+                    //replace delete word1 or delete word2
                     dp[i][j]=1+min(dp[i-1][j-1],min(dp[i-1][j],dp[i][j-1]));
                 }
             }
