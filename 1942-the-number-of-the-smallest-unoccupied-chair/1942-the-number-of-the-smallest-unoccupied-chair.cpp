@@ -2,8 +2,8 @@ class Solution {
 public:
     static bool cmp(const pair<int, pair<int, bool>>& a, const pair<int, pair<int, bool>>& b) {
         if (a.first == b.first) {
-            // 如果時間相同，先處理離開事件 (isArriving == false)
-            return a.second.second < b.second.second;
+            // 如果時間相同，先處理離開事件讓出空位
+            return a.second.second<b.second.second;
         }
         // 否則，按照時間排序
         return a.first < b.first;
