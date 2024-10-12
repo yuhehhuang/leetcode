@@ -1,14 +1,8 @@
-bool cmp(vector<int>a,vector<int>b){
-    if(a[0]==b[0]){
-        //起始點依樣就先做會先結束的
-        return a[1]<b[1];
-    }
-    return a[0]<b[0];
-}
+
 class Solution {
 public:
     int minGroups(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end(),cmp);
+        sort(intervals.begin(),intervals.end());
         priority_queue<int, vector<int>, greater<int>> que;//storing each group end time
         int ans = 1;
 		que.push(intervals[0][1]);
