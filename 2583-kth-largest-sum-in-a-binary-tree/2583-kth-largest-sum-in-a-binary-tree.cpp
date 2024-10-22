@@ -9,11 +9,11 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-bool cmp(long long a,long long b){
-    return a>b;
-} 
 class Solution {
 public:
+    static bool cmp(long long a,long long b){
+    return a>b;
+    } 
     void bfs(TreeNode* root,queue<TreeNode*>&que,vector<long long>&sum){
         while(!que.empty()){
             int level_size=que.size();
