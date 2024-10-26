@@ -17,7 +17,7 @@ public:
         }
         return pathSumR(root,targetSum);
     }
-    int pathSumR(TreeNode*root,int &targetSum){//pathSumR是以
+    int pathSumR(TreeNode*root,int &targetSum){//以root為根算答案+孩子為根算答案
         if(root==NULL){
             return 0;
         }
@@ -27,6 +27,10 @@ public:
         if(root==NULL){
             return 0;
         }
-        return (curSum + root->val == targetSum ? 1 : 0) +pathSumOneR(root->left, targetSum, curSum + root->val) +pathSumOneR(root->right, targetSum, curSum + root->val);
+        curSum+=root->val;
+        int paths = (curSum == targetSum) ? 1 : 0;
+        paths+=pathSumOneR(root->left, targetSum, curSum);
+        paths+=pathSumOneR(root->right, targetSum, curSum);
+        return paths;
     }
 };
