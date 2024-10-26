@@ -15,22 +15,27 @@ public:
         if(root==NULL){
             return 0;
         }
-        return pathSumR(root,targetSum);
+        int paths=0;
+        pathSumR(root,targetSum,paths);
+        return paths;
     }
-    int pathSumR(TreeNode*root,int &targetSum){//以root為根算答案+孩子為根算答案
+    void pathSumR(TreeNode*root,int &targetSum,int& paths){//呼叫每個node當作始祖來算pathSumOneR
         if(root==NULL){
-            return 0;
+            return ;
         }
-        return pathSumOneR(root,targetSum,0)+pathSumR(root->left,targetSum)+pathSumR(root->right,targetSum);
+        pathSumOneR(root,targetSum,0,paths);
+        pathSumR(root->left,targetSum,paths);
+        pathSumR(root->right,targetSum,paths);
     }
-    int pathSumOneR(TreeNode* root,int&targetSum,long curSum){
+    void pathSumOneR(TreeNode* root,int&targetSum,long curSum,int& paths){//以root為根算所有可能path
         if(root==NULL){
-            return 0;
+            return ;
         }
         curSum+=root->val;
-        int paths = (curSum == targetSum) ? 1 : 0;
-        paths+=pathSumOneR(root->left, targetSum, curSum);
-        paths+=pathSumOneR(root->right, targetSum, curSum);
-        return paths;
+        if(curSum==targetSum){
+            paths++;
+        }
+        pathSumOneR(root->left,targetSum,curSum,paths);
+        pathSumOneR(root->right,targetSum,curSum,paths);
     }
 };
