@@ -12,15 +12,9 @@
 class Solution {
 public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
-        if(p==NULL&&q==NULL){
-            return true;
+        if(p==NULL||q==NULL){
+            return p==q;
         }
-        if(p==NULL||q==NULL){//會進入此條件時表示p或q只有其中一個NULL
-            return false;   
-        }
-        if(p->val!=q->val){
-            return false;
-        }
-        return isSameTree(p->left,q->left)&&isSameTree(p->right,q->right);
+        return p->val==q->val&&isSameTree(p->left,q->left)&&isSameTree(p->right,q->right);
     }
 };
