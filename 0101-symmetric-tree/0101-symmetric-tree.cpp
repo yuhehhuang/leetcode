@@ -11,32 +11,13 @@
  */
 class Solution {
 public:
-    bool compare(TreeNode* left,TreeNode* right){
-        if(!left&&right){
-            return false;
+    bool helper(TreeNode*node1,TreeNode* node2){
+        if(node1==NULL||node2==NULL){
+            return node1==node2;
         }
-        else if(left&&!right){
-            return false;
-        }
-        else if(!left&&!right){ //先排除空節點 這樣下面left->val !=right->val才不會出錯
-            return true;
-        }
-        else if(left->val!=right->val){
-            return false;
-        }
-        else{
-        //底下是left->val==right->val的情況下比其他
-        bool outside=compare(left->left,right->right);
-        bool inside=compare(left->right,right->left);
-        bool ans=outside&&inside;
-        return ans;
-        }
-
+        return (node1->val==node2->val)&&helper(node1->left,node2->right)&&helper(node1->right,node2->left);
     }
     bool isSymmetric(TreeNode* root) {
-        if(!root){
-            return true;
-        }
-        return compare(root->left,root->right);
+        return helper(root->left,root->right);
     }
 };
