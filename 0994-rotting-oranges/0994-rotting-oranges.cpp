@@ -21,9 +21,6 @@ public:
         if(cntFreshOrange==0){
             return 0;
         }
-        if(que.empty()){
-            return -1;
-        }
         int minute=-1;
         vector<int>dir_row={0,1,0,-1};
         vector<int>dir_col={1,0,-1,0};
