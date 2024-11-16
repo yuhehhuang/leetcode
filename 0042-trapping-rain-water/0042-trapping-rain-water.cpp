@@ -1,35 +1,22 @@
 class Solution {
 public:
-    int trap(vector<int>& h) {
-        //st.top():裝水的高度
-        //i:st.top()的右壁
-        //st.pop()後 st.top()=裝水的高度的左壁
-        if(h.size()<=2) return 0;
-        stack<int>st;
-        st.push(0);
-        int result=0;
-        for(int i=1;i<h.size();i++){
-            if(h[i]<h[st.top()]){
-                st.push(i);
-            }
-            else if(h[i]==h[st.top()]){
-                st.push(i);
-            }
-            else{
-                while(!st.empty()&&h[i]>h[st.top()]){
-                    int mid=st.top();
-                    st.pop();
-                    if(!st.empty()){
-                    int left=st.top();
-                    int right=i;
-                    int width=right-left-1;
-                    int len=min(h[left],h[right])-h[mid];
-                    result+=width*len;
-                    }
-                }
-                st.push(i);
-            }
+    int trap(vector<int>& height) {
+        int n=height.size();
+        vector<int>pre_max(n);
+        pre_max[0]=height[0];
+        for(int i=1;i<n;++i){
+            pre_max[i]=max(pre_max[i-1],height[i]);
         }
-        return result;
+        vector<int>suf_max(n);
+        suf_max[n-1]=height[n-1];
+        for(int i=n-2;i>=0;--i){
+            suf_max[i]=max(suf_max[i+1],height[i]);
+
+        }
+        int ans=0;
+        for(int i=0;i<n;++i){
+            ans+=min(pre_max[i],suf_max[i])-height[i];
+        }
+        return ans;
     }
 };
