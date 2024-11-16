@@ -4,12 +4,18 @@ public:
         vector<vector<int>>ans;
         sort(nums.begin(),nums.end());
         for(int i=0;i<nums.size()-2;++i){
-            if(i>0&&nums[i]==nums[i-1]){//i去重
-                continue;
-            }
             int x=nums[i];
             int left=i+1;
             int right=nums.size()-1;
+            if(i>0&&nums[i]==nums[i-1]){//i去重
+                continue;
+            }
+            if(x+nums[left]+nums[left+1]>0){
+                break;
+            }
+            if(x+nums[nums.size()-1]+nums[nums.size()-2]<0){
+                continue;
+            }
             while(left<right){
                 int sum=x+nums[left]+nums[right];
                 if(sum<0){
