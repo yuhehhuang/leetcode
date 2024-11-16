@@ -13,7 +13,7 @@ public:
                 st.push(i);
             }
             else if(h[i]==h[st.top()]){
-                continue;
+                st.push(i);
             }
             else{
                 while(!st.empty()&&h[i]>h[st.top()]){
