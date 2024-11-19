@@ -11,15 +11,17 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-                ListNode* temp; // 保存cur的下一个节点
-        ListNode* cur = head;
-        ListNode* pre = NULL;
-        while(cur){
-            temp=cur->next;
+        ListNode* pre=NULL;
+        ListNode*  next;
+        ListNode* cur=head;
+        while(cur!=NULL){
+            next=cur->next;
             cur->next=pre;
             pre=cur;
-            cur=temp;
+            cur=next;
         }
         return pre;
+
+
     }
 };
