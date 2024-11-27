@@ -11,13 +11,13 @@
  */
 class Solution {
 public:
-    bool helper(TreeNode*node1,TreeNode* node2){
-        if(node1==NULL||node2==NULL){
-            return node1==node2;
+    bool isSame(TreeNode* p,TreeNode* q){
+        if(!p||!q){
+            return p==q;
         }
-        return (node1->val==node2->val)&&helper(node1->left,node2->right)&&helper(node1->right,node2->left);
+        return p->val==q->val&&isSame(p->left,q->right)&&isSame(p->right,q->left);
     }
     bool isSymmetric(TreeNode* root) {
-        return helper(root->left,root->right);
+        return isSame(root->left,root->right);
     }
 };
