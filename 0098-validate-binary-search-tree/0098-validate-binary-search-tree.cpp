@@ -11,11 +11,15 @@
  */
 class Solution {
 public:
-    bool isValidBST(TreeNode* root,long long left=LLONG_MIN,long long right=LLONG_MAX) {
+    long long pre=LLONG_MIN;
+    bool isValidBST(TreeNode* root) {
         if(root==NULL){
             return true;
         }
-        long long x=root->val;
-        return left<x&&x<right&&isValidBST(root->left,left,x)&&isValidBST(root->right,x,right);
+        if(!isValidBST(root->left)||root->val<=pre){
+            return false;
+        }
+        pre=root->val;
+        return isValidBST(root->right);
     }
 };
