@@ -11,22 +11,11 @@
  */
 class Solution {
 public:
-    vector<int>vec;
-    void inorder(TreeNode* root){
+    bool isValidBST(TreeNode* root,long long left=LLONG_MIN,long long right=LLONG_MAX) {
         if(root==NULL){
-            return;
+            return true;
         }
-        inorder(root->left);
-        vec.push_back(root->val);
-        inorder(root->right);
-    }
-    bool isValidBST(TreeNode* root) {
-        inorder(root);
-        for(int i=0;i<vec.size()-1;i++){
-            if(vec[i]>=vec[i+1]){
-                return 0;
-            }
-        }
-        return 1;
+        long long x=root->val;
+        return left<x&&x<right&&isValidBST(root->left,left,x)&&isValidBST(root->right,x,right);
     }
 };
