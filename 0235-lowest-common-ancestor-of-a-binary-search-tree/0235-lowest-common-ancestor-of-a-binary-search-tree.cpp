@@ -10,25 +10,14 @@
 
 class Solution {
 public:
-////最近共同祖先之值一定介於[p,q]所以找到這條件就是答案
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(root==NULL){
-            return NULL;
+        int x=root->val;
+        if(x>p->val&&x>q->val){
+            return lowestCommonAncestor(root->left,p,q);
         }
-        if(root->val>p->val&&root->val>q->val){
-            TreeNode* left=lowestCommonAncestor(root->left,p,q);
-            if(left!=NULL){
-                return left;
-            }
-        }
-        if(root->val<p->val&&root->val<q->val){
-            TreeNode* right=lowestCommonAncestor(root->right,p,q);
-            if(right!=NULL){
-                return right;
-            }
+        if(x<p->val&&x<q->val){
+            return lowestCommonAncestor(root->right,p,q);
         }
         return root;
-        
-
     }
 };
