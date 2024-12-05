@@ -12,28 +12,27 @@
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        queue<TreeNode*>que;
-        vector<vector<int>>result;
-        if(root!=NULL){
-            que.push(root);
+        if(root==NULL){
+            return {};
         }
-        while(!que.empty()){
-            vector<int>row;
-            int size=que.size();
-            for(int i=0;i<size;i++){
-                //蒐集本層輸入進路徑(ROW)
-                row.push_back(que.front()->val);
-                //以下蒐集下一輪的data
-                if(que.front()->left!=NULL){
-                    que.push(que.front()->left);
+        vector<vector<int>>ans;
+        vector<TreeNode*>cur={root};
+        while(cur.size()){
+            vector<TreeNode*>next;
+            vector<int>vals;
+            for(auto node:cur){
+                vals.push_back(node->val);
+                if(node->left){
+                    next.push_back(node->left);
                 }
-                if(que.front()->right!=NULL){
-                    que.push(que.front()->right);
+                if(node->right){
+                    next.push_back(node->right);
                 }
-                que.pop();
             }
-            result.push_back(row);
+            cur=move(next);
+            ans.push_back(vals);
         }
-        return result;
+        return ans;
+        
     }
 };
