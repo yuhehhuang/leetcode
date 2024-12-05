@@ -9,7 +9,7 @@ public:
         int n=digits.length();
         string path(n,0);
         //i 記錄這是第幾個數字
-        auto dfs=[&](auto&dfs,int i){
+        auto dfs=[&](auto dfs,int i){
             if(i==n){
                 ans.push_back(path);
                 return;
