@@ -7,6 +7,9 @@ public:
         }
         //
         for(int i=index;i<n+1;++i){
+            if(n-index+1<k-path.size()){
+                continue;
+            }
             path.push_back(i);
             dfs(ans,path,i+1,n,k);
             path.pop_back();
