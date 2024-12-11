@@ -1,18 +1,12 @@
 class Solution {
 public:
-    int dfs(vector<int>&nums,int index,vector<int>&memory){
-        if(index<0){
-            return 0;
-        }
-        if(memory[index]!=-1){
-            return memory[index];
-        }
-        int res=max(dfs(nums,index-1,memory),dfs(nums,index-2,memory)+nums[index]);
-        memory[index]=res;
-        return res;
-    }
     int rob(vector<int>& nums) {
-        vector<int> memory(nums.size(),-1);
-        return dfs(nums,nums.size()-1,memory);
+        int n=nums.size();
+        vector<int>f(n+2,0);
+        for(int i=0;i<n;++i){
+            //f[i+2]map to index i的optimal solution
+            f[i+2]=max(f[i+1],f[i]+nums[i]);
+        }
+        return f[nums.size()+1];
     }
 };
