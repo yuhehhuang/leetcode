@@ -1,17 +1,18 @@
 class Solution {
 public:
+    int dfs(vector<int>&nums,int index,vector<int>&memory){
+        if(index<0){
+            return 0;
+        }
+        if(memory[index]!=-1){
+            return memory[index];
+        }
+        int res=max(dfs(nums,index-1,memory),dfs(nums,index-2,memory)+nums[index]);
+        memory[index]=res;
+        return res;
+    }
     int rob(vector<int>& nums) {
-        if(nums.size()==1){
-            return nums[0];
-        }
-        vector<int>dp(nums.size(),0);
-        dp[0]=nums[0];
-        dp[1]=max(nums[0],nums[1]);
-        for(int i=2;i<nums.size();i++){
-            //index 0~i的房子最多能偷的錢==dp[i]
-            //dp[i]=(不偷第i家的解 OR 偷第i家的解取)max
-            dp[i]=max(dp[i-1],dp[i-2]+nums[i]);
-        }
-        return dp[nums.size()-1];
+        vector<int> memory(nums.size(),-1);
+        return dfs(nums,nums.size()-1,memory);
     }
 };
