@@ -11,10 +11,13 @@ public:
         //for(int i=0;i<=n;++i){
             //dp[i][0]=i;
         //}
+        for (int j = 0; j <= m; ++j) {
+            dp[j] = j;//dp[0][j]=j;
+        }
         for(int i=0;i<n;++i){
-            int prev=i;
+            int prev=dp[0];
             //prev=dp[i][0];
-            dp[0]++;
+            dp[0]=i+1;//dp[i+1][0]=i+1;
             for(int j=0;j<m;++j){
                 int tmp=dp[j+1];
                 if(word1[i]==word2[j]){
