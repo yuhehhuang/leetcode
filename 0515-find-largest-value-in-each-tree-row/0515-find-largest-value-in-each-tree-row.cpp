@@ -10,22 +10,25 @@
  * };
  */
 class Solution {
+    static bool cmp(int a,int b){
+        return a>b;
+    }
 public:
     vector<int> largestValues(TreeNode* root) {
-        queue<TreeNode*>que;
-        vector<int> result;
-        if(root!=NULL){
-            que.push(root);
+        //BFS
+        if(root==NULL){
+            return {}; 
         }
+        queue<TreeNode*>que;
+        que.push(root);
+        vector<int>ans;
         while(!que.empty()){
-            int size=que.size();
-            int cmp=INT_MIN;
-            for(int i=0;i<size;i++){
+            int que_size=que.size();
+            vector<int>vec;
+            for(int i=0;i<que_size;++i){
                 TreeNode* tmp=que.front();
+                vec.push_back(tmp->val);
                 que.pop();
-                if(tmp->val>cmp){
-                    cmp=tmp->val;
-                }
                 if(tmp->left){
                     que.push(tmp->left);
                 }
@@ -33,8 +36,9 @@ public:
                     que.push(tmp->right);
                 }
             }
-            result.push_back(cmp);
+            sort(vec.begin(),vec.end(),cmp);
+            ans.push_back(vec[0]);
         }
-        return result;
+        return ans;
     }
 };
