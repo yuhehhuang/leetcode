@@ -20,7 +20,7 @@ public:
             vis[nums[i]]++;
             if(vis[nums[i]]==1){
                 dist++;
-            }
+            }//他跟上一輪的元素都不重複
             vis[nums[i-k]]--;
             if(vis[nums[i-k]]==0){
                 dist--;
