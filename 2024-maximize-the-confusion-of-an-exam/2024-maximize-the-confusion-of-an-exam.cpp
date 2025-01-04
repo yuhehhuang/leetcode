@@ -1,35 +1,14 @@
 class Solution {
 public:
-    int maxConsecutiveAnswers(string ans, int k) {
-        //兩次slide window
-        int left_T=0;
-        int left_F=0;
-        int cnt=k;
-        int ansx=0;
-        for(int right=0;right<ans.size();++right){
-            if(ans[right]=='F'){
-                cnt--;
+    int maxConsecutiveAnswers(string answerKey, int k) {
+        int ans = 0, left = 0, cnt[2]{};
+        for (int right = 0; right < answerKey.length(); right++) {
+            cnt[answerKey[right] >> 1 & 1]++;
+            while (cnt[0] > k && cnt[1] > k) {
+                cnt[answerKey[left++] >> 1 & 1]--;
             }
-            while(cnt<0){
-                if(ans[left_T]=='F'){
-                    cnt++;
-                }
-                left_T++;
-            }
-            ansx=max(ansx,right-left_T+1);
+            ans = max(ans, right - left + 1);
         }
-        for(int right=0;right<ans.size();++right){
-            if(ans[right]=='T'){
-                k--;
-            }
-            while(k<0){
-                if(ans[left_F]=='T'){
-                    k++;
-                }
-                left_F++;
-            }
-            ansx=max(ansx,right-left_F+1);
-        }
-        return ansx;
+        return ans;
     }
 };
