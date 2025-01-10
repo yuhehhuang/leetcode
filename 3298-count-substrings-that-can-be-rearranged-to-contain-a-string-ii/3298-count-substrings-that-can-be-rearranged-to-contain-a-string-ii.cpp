@@ -19,7 +19,7 @@ public:
         for(int right=0;right<word1.size();++right){
             cnt_w1[word1[right]-'a']++;
             while(is_valid(cnt_w1,cnt_w2)){
-             cnt_w1[word1[left++]-'a']--;   
+            --cnt_w1[word1[left++]-'a'];   
             }
             ans+=left;
         }
