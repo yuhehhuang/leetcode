@@ -15,13 +15,13 @@ public:
             capacityA-=plants[left++];
             if(plants[right]>capacityB){
                 cnt++;
-                capacityA=B_max;
+                capacityB=B_max;
             }
             capacityB-=plants[right--];
         }
         if(left==right){
-            if(plants[left]>max(capacityA,capacityB)){
-                cnt++;
+            if(plants[left]>capacityA&&plants[left]>capacityB){
+                cnt+=1;
             }
         }
         return cnt;
