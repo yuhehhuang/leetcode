@@ -1,46 +1,50 @@
 class Solution {
 public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-        vector<vector<int>> result;
         sort(nums.begin(),nums.end());
-        for(int k=0;k<nums.size();k++){
-            if(nums[k]>target&&nums[k]>=0){ //first 去重
+        vector<vector<int>>ans{};
+        if(nums.size()<4){
+            return ans;
+        }
+        for(int i=0;i<=nums.size()-3;++i){
+            if(nums[i]>target&&nums[i]>=0){
                 break;
             }
-            if(k>0&&nums[k]==nums[k-1]){
+            else if(i>0&&nums[i]==nums[i-1]){
+                //去重
                 continue;
             }
-            for(int i=k+1;i<nums.size();i++){
-                if((long)nums[k]+nums[i]>target&&nums[k]+nums[i]>=0){
+            for(int k=i+1;k<=nums.size()-2;++k){
+                if((long long)nums[i]+nums[k]>target&&(long long)nums[i]+nums[k]>=0){
                     break;
                 }
-            if(i>k+1&&nums[i]==nums[i-1]){ //second 去重複
-                continue;
-            }
-            int left=i+1;
-            int right=nums.size()-1;
-            while(right>left){
-                if((long)nums[k]+nums[i]+nums[left]+nums[right]>target){
-                    right--;
+                else if(k>i+1&&nums[k]==nums[k-1]){
+                    continue;
                 }
-                else if((long)nums[k]+nums[i]+nums[left]+nums[right]<target){
-                    left++;
-                }
-                else{
-                    result.push_back(vector<int>{nums[k],nums[i],nums[right],nums[left]});
-                    while(right>left&&nums[right]==nums[right-1]){
+                int left=k+1;
+                int right=nums.size()-1;
+                long long x=(long long )target-nums[i]-nums[k];
+                while(left<right){
+                    if((long long)nums[left]+nums[right]>x){
                         right--;
                     }
-                    while(right>left&&nums[left]==nums[left+1]){
+                    else if((long long)nums[left]+nums[right]<x){
                         left++;
                     }
-                    right--;
-                    left++;
+                    else{
+                        ans.push_back({nums[i],nums[k],nums[left],nums[right]});
+                        while(left<right&&nums[right]==nums[right-1]){
+                            right--;
+                        }
+                        while(left<right&&nums[left]==nums[left+1]){
+                            left++;
+                        }
+                        right--;
+                        left++;
+                    }
                 }
             }
-            
         }
-    }
-    return result;
+        return ans;
     }
 };
