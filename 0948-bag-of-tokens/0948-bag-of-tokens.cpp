@@ -1,8 +1,9 @@
 class Solution {
 public:
-//how to get score : 用power去支付tokens來換取 score+1;
-//用小的token來get score 用score 換大的token
-//power-token[small]+token[big]>次二小的合才賺
+//盡量用power買便宜的，直到power不夠後，用score去換最大的 然後繼續買。
+//left:準備要買的
+//right:準備要賣的
+//所以說同一個商品有可能要買或賣(while(left<=right))
     int bagOfTokensScore(vector<int>& tokens, int power) {
         sort(tokens.begin(),tokens.end());
         int ans=0;
