@@ -1,15 +1,26 @@
 class Solution {
 public:
     void duplicateZeros(vector<int>& arr) {
-        vector<int>new_arr;
+        //先計算有幾個zero
+        int zero=0;
         for(int i=0;i<arr.size();++i){
-            new_arr.push_back(arr[i]);
             if(arr[i]==0){
-                new_arr.push_back(0);
+                zero++;
             }
         }
-        for(int i=0;i<arr.size();++i){
-            arr[i]=new_arr[i];
+        //
+        int j=arr.size()+zero-1;
+        for(int i=arr.size()-1;i>=0;--i){
+            if(j<arr.size()){
+                arr[j]=arr[i];
+            }
+            if(arr[i]==0){
+                j--;
+                if(j<arr.size()){
+                    arr[j]=0;
+                }
+            }
+            j--;
         }
         return ;
     }
