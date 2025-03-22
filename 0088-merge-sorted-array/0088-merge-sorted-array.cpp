@@ -4,10 +4,6 @@ public:
         vector<int>nums3;
         int i=0;
         int j=0;
-        if(m==0){
-            nums1=nums2;
-            return;
-        }
         while(m&&n){
             if(nums1[i]<=nums2[j]){
                 nums3.push_back(nums1[i]);
