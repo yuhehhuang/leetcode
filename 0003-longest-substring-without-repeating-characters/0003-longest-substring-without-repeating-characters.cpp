@@ -1,17 +1,19 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        //sliding window
-        int window_len=0;
-        int start=0;
-        unordered_map<char,int>latest_index;//紀錄每個char最新一次出現在哪
-        for(int end=0;end<s.size();end++){
-            if(latest_index.find(s[end])!=latest_index.end()&&latest_index[s[end]]>=start){
-                start=latest_index[s[end]]+1;
+        unordered_set<char>st;
+        int ans=0;
+        int left=0;
+        int right=0;
+        while(right<s.size()){
+            while(st.find(s[right])!=st.end()){
+                //case :找到重複元素 把它位置找到並刪除
+                st.erase(s[left++]);
             }
-            latest_index[s[end]]=end;//更新最新一次出現在哪
-            window_len=max(window_len,end-start+1);
+            st.insert(s[right]);
+            ans=max(ans,right-left+1);
+            right++;
         }
-        return window_len;
+        return ans;
     }
 };
