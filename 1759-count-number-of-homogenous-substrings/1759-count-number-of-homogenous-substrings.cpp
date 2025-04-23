@@ -10,7 +10,7 @@ public:
                 i++;
                 len++;
             }
-            ans = (ans + 1LL * len * (len + 1) / 2) % (MOD);
+            ans = (ans +1ll*len * (len + 1) / 2) % (MOD);
             i++;
         }
         return ans;
