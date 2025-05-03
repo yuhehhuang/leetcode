@@ -1,31 +1,23 @@
 class Solution {
 public:
-    static bool cmp(vector<int>&a,vector<int>&b){
-        return a[0]<b[0];
-    }
-    int BS(vector<vector<int>>&nums,int n){
-        int left=0;
-        int right=nums.size()-1;
-        while(left<=right){
-            int mid=(left+right)/2;
-            if(nums[mid][0]>n){
-                right=mid-1;
-            }
-            else{
-                left=mid+1;
-            }
-        }
-        return right;
-    }
     vector<int> maximumBeauty(vector<vector<int>>& items, vector<int>& queries) {
-        sort(items.begin(),items.end(),cmp);
-        for(int i=1;i<items.size();++i){
-            items[i][1]=max(items[i][1],items[i-1][1]);
+        vector<pair<int, int>> query_with_index;
+        for (int i = 0; i < queries.size(); ++i) {
+            query_with_index.push_back({queries[i], i});
         }
-        for(int&q:queries){
-            int j=BS(items,q);
-            q=(j>=0)?items[j][1]:0;
+        sort(query_with_index.begin(), query_with_index.end());
+        sort(items.begin(),items.end());
+        vector<int>ans(queries.size());
+        int max_beauty=0,j=0;
+        for(int i=0;i<query_with_index.size();++i){
+            int q = query_with_index[i].first;
+            int idx = query_with_index[i].second;
+            while(j<items.size()&&items[j][0]<=q){
+                max_beauty=max(max_beauty,items[j][1]);
+                j++;
+            }
+            ans[idx] = max_beauty;  // 放到原本的位置
         }
-        return queries;
+        return ans;
     }
 };
