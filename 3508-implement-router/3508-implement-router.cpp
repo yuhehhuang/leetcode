@@ -2,26 +2,25 @@ class Router {
 public:
     int limit;
     queue<int>q;
-    set<array<int,3>>s;
     unordered_map<int,deque<array<int,3>>>m;
+    set<array<int,3>>s;
     Router(int memoryLimit) {
         limit=memoryLimit;
     }
-    //當router偵測到有相同的(source,destination,timestamp)，判定有重複->return false;
+    
     bool addPacket(int source, int destination, int timestamp) {
-        array<int,3>a{timestamp,source,destination};
-        if(!s.contains(a)){
-            q.push(destination);
-            s.insert(a);
-            m[destination].push_back(a);
-            if(s.size()>limit){
-                int f =q.front();
-                array<int,3>aa=m[f].front();
-                q.pop();
-                s.erase(aa);
-                m[f].pop_front();
-            }
-            return true;
+        if(s.find({timestamp,source,destination})==s.end()){
+           q.push(destination);
+           s.insert({timestamp,source,destination});
+           m[destination].push_back({timestamp,source,destination});
+           if(s.size()>limit){
+            int f=q.front();
+            array<int,3>aa=m[f].front();
+            s.erase(aa);
+            q.pop();
+            m[f].pop_front();
+           }
+           return true;
         }
         return false;
     }
@@ -32,17 +31,17 @@ public:
         }
         int f=q.front();
         array<int,3>a=m[f].front();
-        q.pop();
         s.erase(a);
+        q.pop();
         m[f].pop_front();
         return {a[1],a[2],a[0]};
     }
     
     int getCount(int destination, int startTime, int endTime) {
-        deque<array<int,3>>&dq=m[destination];
-        auto start=lower_bound(dq.begin(),dq.end(),array<int,3>{startTime,0,0});
-        auto end=upper_bound(dq.begin(),dq.end(),array<int,3>{endTime+1,0,0});
-        return end-start;
+        deque<array<int,3>>&tmp=m[destination];
+        auto l=lower_bound(tmp.begin(),tmp.end(),array{startTime,0,0});
+        auto r=upper_bound(tmp.begin(),tmp.end(),array{endTime,INT_MAX,INT_MAX});
+        return r-l;
     }
 };
 
