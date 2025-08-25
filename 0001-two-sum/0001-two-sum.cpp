@@ -1,15 +1,13 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        map<int,int> book;
-        for(int i=0;i<nums.size();i++){
-             map<int,int>::iterator iter = book.find(target - nums[i]); 
-            if(iter!=book.end()){
-                return{iter->second,i};
+        map<int,int>mp;
+        for(int i=0;i<nums.size();++i){
+            int complement=target-nums[i];
+            if(mp.find(complement)!=mp.end()){
+                return {mp[complement],i};
             }
-            else{
-                 book.insert(pair<int, int>(nums[i], i)); 
-            }
+            mp[nums[i]]=i;
         }
         return {};
     }
