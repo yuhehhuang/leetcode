@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int findNthDigit(int n) {
+        long long digit =9;
+        int first =1;
+        int length=1;
+        while(n>digit*length){
+            n-=digit*length;
+            length++;
+            first*=10;
+            digit*=10;
+        }
+        int location = first + (n-1)/length;
+        string str=to_string(location);
+        return str[(n-1)%length]-'0';
+    }
+};
