@@ -10,6 +10,9 @@ public:
             if(citations[i]>=h_index+1){
                 h_index++;
             }
+            else{
+                break;
+            }
         }
         return h_index;
     }
