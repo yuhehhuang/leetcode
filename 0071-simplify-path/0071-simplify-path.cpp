@@ -1,40 +1,30 @@
 class Solution {
 public:
     string simplifyPath(string path) {
-     //queue 把/之間的單詞push進去，如果/ / 之間是..就pop一個單詞出來 一個.就部動作
-     int i=0,n=path.length();
-     stack<string>st;
-     string ans;
-     for(int i=0;i<n;){
-        while(i<n&&path[i]=='/')i++;
-        if(i>=n) break;
-
-        string word;
-        while(i<n&&path[i]!='/'){
-            word+=path[i++];
-        }
-        if(word=="."||word.empty()){
-            continue;
-        }
-        else if(word==".."){
-            if(!st.empty()){
-                st.pop();
+        vector<string>ans;
+        int i=0,n=path.length();
+        for(i=0;i<n;){
+            if(path[i]=='/'){
+                string word;
+                i++;
+                while(i<n&&path[i]!='/'){
+                    word+=path[i++];
+                }
+                if(word==".."){
+                    if(ans.size()!=0)ans.pop_back();
+                    continue;
+                }
+                else if(word=="."){
+                    continue;
+                }
+                if(word.size()!=0)ans.push_back(word);
             }
         }
-        else{
-            st.push(word);
+        if(ans.size()==0)return "/";
+        string ans_1="";
+        for(int i=0;i<ans.size();++i){
+            ans_1+="/"+ans[i];
         }
-     }
-     if(st.empty()) return "/";
-      vector<string>tmp;
-      while(!st.empty()){
-        tmp.push_back(st.top());
-        st.pop(); 
+        return ans_1;
     }
-      for(int i=tmp.size()-1;i>=0;i--){
-        ans+="/"+tmp[i];
-      }
-      return ans;
-    }
-    
 };
