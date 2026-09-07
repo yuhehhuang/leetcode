@@ -1,30 +1,34 @@
 class Solution {
 public:
-    void removeExtraSpaces(string& s){ //用來把多餘的space移除
-            int slow=0;
-            for(int fast=0;fast<s.size();fast++){
-                if(s[fast]!=' '){
-                    if(slow!=0){
-                        s[slow++]=' ';
+    string reverseWords(string s) {
+        vector<string>vec;
+        for(int i=0;i<s.size();++i){
+            if(s[i]!=' '){
+                string tmp;
+                for(i;i<s.size();++i){
+                    if(s[i]!=' '){
+                        tmp+=s[i];
                     }
-                    while(fast<s.size()&&s[fast]!=' '){
-                        s[slow++]=s[fast++];
+                    else{
+                        break;
                     }
                 }
-            }
-            s.resize(slow);
-        }
-    string reverseWords(string s) {
-        removeExtraSpaces(s);
-        reverse(s.begin(),s.end());
-        string::iterator start=s.begin();
-        for(int i=0;i<=s.size();i++){
-            if(i==s.size()||s[i]==' '){
-                reverse(start,s.begin()+i);
-                start=s.begin()+i+1;
+            vec.push_back(tmp);
             }
         }
-        return s;
+        int left=0,right=vec.size()-1;
+        while(left<right){
+            string tmp =vec[left];
+            vec[left]=vec[right];
+            vec[right]=tmp;
+            left++;
+            right--;
+        }
+        string ans;
+        for(int i=0;i<vec.size();++i){
+            ans+=vec[i];
+            if(i!=vec.size()-1)ans+=' ';
+        }
+        return ans;
     }
 };
-
