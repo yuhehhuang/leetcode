@@ -1,20 +1,21 @@
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
-        int result=INT32_MAX;
+        int right=0;
+        int ans=INT_MAX;
         int sum=0;
-        int i=0;
-        int sublength=0;
-        for(int j=0;j<nums.size();j++){
-            sum+=nums[j];
-            while(sum>=target){
-                sublength=j-i+1;
-                result=result<sublength?result:sublength;
-                sum-=nums[i++];
+        int left=0;
+        //for負責先增加windows，後續作while縮小window，目的是希望增加一個windows可以縮小>1個windows來更新答案
+        for(right;right<nums.size();++right){
+            sum+=nums[right];
+            //while負責縮小windows
+            while(sum-nums[left]>=target){
+                sum-=nums[left++];
             }
-        
+            if(sum>=target){
+                ans=min(ans,right-left+1);
+            }
         }
-        return result==INT_MAX? 0:result;
-    
+        return ans==INT_MAX?0:ans;
     }
 };
