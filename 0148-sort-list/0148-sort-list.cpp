@@ -52,10 +52,12 @@ public:
         }
         while(head1!=nullptr){
             newhead->next=head1;
+            newhead=newhead->next;
             head1=head1->next;
         }
         while(head2!=nullptr){
             newhead->next=head2;
+            newhead=newhead->next;
             head2=head2->next;
         }
         return mem;
