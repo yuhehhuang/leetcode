@@ -9,43 +9,65 @@
  * };
  */
 class Solution {
-    ListNode* middleList(ListNode* head){
-        ListNode* slow=head;
-        ListNode* fast = head;
-        ListNode* pre=head;
-        while(fast &&fast->next){
-            pre=slow;
+public:
+    ListNode* mid_location(ListNode*head){
+        ListNode *slow=head;
+        ListNode * fast=head;
+        ListNode *prev;
+        while(fast!=nullptr&&fast->next!=nullptr){
+            prev=slow;
             slow=slow->next;
             fast=fast->next->next;
         }
-        pre->next=nullptr;
+        prev->next=nullptr;
         return slow;
     }
-    ListNode* mergetwoList(ListNode* list1 , ListNode* list2){
-        ListNode dummy;
-        ListNode *cur=&dummy;
-        while(list1 && list2){
-            if(list1->val < list2->val){
-                cur->next=list1;
-                list1=list1->next;
+    ListNode* merge(ListNode* head1,ListNode* head2){
+        //return the head after merge;
+        ListNode *newhead=nullptr;
+        ListNode *mem;
+        while(head1!=nullptr&&head2!=nullptr){
+            if(head1->val<=head2->val){
+               if(newhead==nullptr){
+                newhead=head1;
+                mem=head1;
+               }
+               else{
+                newhead->next=head1;
+                newhead=newhead->next;  
+               }
+               head1=head1->next;
             }
             else{
-                cur->next=list2;
-                list2=list2->next;
-            }
-            cur=cur->next;
+                if(newhead==nullptr){
+                    newhead=head2;
+                    mem=head2;
+                }
+                else{
+                    newhead->next=head2;
+                    newhead=newhead->next;  
+                }
+                head2=head2->next;
+            }          
         }
-        cur->next= list1?list1:list2;
-        return dummy.next;
+        while(head1!=nullptr){
+            newhead->next=head1;
+            head1=head1->next;
+        }
+        while(head2!=nullptr){
+            newhead->next=head2;
+            head2=head2->next;
+        }
+        return mem;
     }
-public:
     ListNode* sortList(ListNode* head) {
         if(head==nullptr||head->next==nullptr){
             return head;
         }
-        ListNode* head2= middleList(head);
-        head = sortList(head);
-        head2 = sortList(head2);
-        return mergetwoList(head,head2);
+        ListNode *head2=mid_location(head);
+        head=sortList(head);
+        head2=sortList(head2);
+        ListNode* ans=merge(head,head2);
+        return ans;
     }
 };
