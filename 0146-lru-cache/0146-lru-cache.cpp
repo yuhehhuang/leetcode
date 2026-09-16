@@ -9,9 +9,9 @@ public:
     
     int get(int key) {
         if(key_to_iter.find(key)!=key_to_iter.end()){
-            auto node_iter=key_to_iter[key];
-            cache_list.splice(cache_list.begin(),cache_list,node_iter);
-            return node_iter->second;
+            auto list_iter=key_to_iter[key];
+            cache_list.splice(cache_list.begin(),cache_list,list_iter);
+            return list_iter->second;
         }
         return -1;
     }
