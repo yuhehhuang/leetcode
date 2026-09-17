@@ -10,6 +10,9 @@ public:
         if(row<0||row>=board.size()||col<0||col>=board[0].size()){
             return;
         }
+        if(ans){
+            return;
+        }
         if(word[index]==board[row][col]){
             board[row][col]='.';
             for(int i=0;i<4;++i){
