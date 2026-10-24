@@ -1,46 +1,47 @@
-typedef struct node{
-    int value;
+typedef struct Node{
+    int val;
     int min;
-    struct node *next;
-}node;
+    struct Node *next;
+}Node;
 
-//Minstack實際上就是一個node的指標
-typedef struct {
-    node* head;
+
+typedef struct MinStack{
+    Node* head;
 } MinStack;
 
-//建立MinStack指標
+
 MinStack* minStackCreate() {
-    MinStack* obj = (MinStack*)malloc(sizeof(MinStack));
+    MinStack* obj=(MinStack*)malloc(sizeof(MinStack));
     obj->head=NULL;
     return obj;
 }
 
 void minStackPush(MinStack* obj, int value) {
-    node *newnode = (node*)malloc(sizeof(node));
-    newnode->value=value;
-    if(obj->head==NULL||obj->head->min>value){
-        newnode->min=value;
+    Node* new_node=(Node*)malloc(sizeof(Node));
+    new_node->val=value;
+    if(obj->head==NULL){
+        new_node->next=NULL;
+        new_node->min=value;
+        obj->head=new_node;
+        return;
     }
-    else{
-        newnode->min=obj->head->min;
-    }
-    newnode->next=obj->head;
-    obj->head=newnode;
-    return;   
+    new_node->next=obj->head;
+    new_node->min=obj->head->min<=value?obj->head->min:value;
+    obj->head=new_node;
+    return;
 }
 
 void minStackPop(MinStack* obj) {
     if(obj->head==NULL){
         return;
     }
-    node* tmp=obj->head;
+    Node* tmp=obj->head;
     obj->head=obj->head->next;
     free(tmp);
 }
 
 int minStackTop(MinStack* obj) {
-    return obj->head->value;
+    return obj->head->val;
 }
 
 int minStackGetMin(MinStack* obj) {
@@ -48,12 +49,12 @@ int minStackGetMin(MinStack* obj) {
 }
 
 void minStackFree(MinStack* obj) {
-    node *cur=obj->head;
-    while(cur!=NULL){
-        node *tmp=cur;
-        cur=cur->next;
+    while(obj->head!=NULL){
+        Node* tmp=obj->head;
+        obj->head=tmp->next;
         free(tmp);
     }
+    free(obj);
 }
 
 /**
