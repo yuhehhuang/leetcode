@@ -5,31 +5,46 @@
  *     struct ListNode *next;
  * };
  */
-struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
-    struct ListNode head;
-    struct ListNode *h=&head; //h是存"head"位置 此位置放的資料結構是struct
-    if(list1==NULL && list2==NULL){
-        return NULL;
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+    struct ListNode* ans=NULL;
+    struct ListNode* cur=NULL;
+    if(list1==NULL||list2==NULL){
+        return list1==NULL?list2:list1;
     }
     while(list1!=NULL&&list2!=NULL){
-        if(list1->val<list2->val){
-            h->next=list1;
-            list1=list1->next;
-            h=h->next;
+        struct ListNode* new_node=(struct ListNode*)malloc(sizeof(struct ListNode));
+        if(cur==NULL){
+            ans=new_node;
+            cur=new_node;
+            new_node->next=NULL;
+            if(list1->val<list2->val){
+                new_node->val=list1->val;
+                list1=list1->next;
+            }
+            else{
+                new_node->val=list2->val;
+                list2=list2->next;
+            }
         }
         else{
-            h->next=list2;
-            list2=list2->next;
-            h=h->next;
+            new_node->next=NULL;
+            cur->next=new_node;
+            cur=cur->next;
+            if(list1->val<list2->val){
+                new_node->val=list1->val;
+                list1=list1->next;
+            }
+            else{
+                new_node->val=list2->val;
+                list2=list2->next;
+            }
         }
     }
     if(list1==NULL){
-        h->next =list2;
+      cur->next=list2;  
     }
     if(list2==NULL){
-        h->next=list1;
+        cur->next=list1;
     }
-    return head.next;
-
-   
+    return ans;
 }
