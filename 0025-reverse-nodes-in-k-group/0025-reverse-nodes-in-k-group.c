@@ -16,10 +16,10 @@ struct ListNode* reverseKGroup(struct ListNode* head, int k) {
     dummy->next=head;
     struct ListNode* p0=dummy;
     struct ListNode* cur=p0->next;
+    struct ListNode* prev=NULL;
     while(list_len>=k){
         list_len-=k;
         struct ListNode* next_p0=p0->next;
-        struct ListNode* prev=NULL;
         int cnt=k;
         while(cnt--){
             //reverse function
