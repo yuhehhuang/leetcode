@@ -17,7 +17,7 @@ struct ListNode* swapPairs(struct ListNode* head) {
     dummy->next=head;
     struct ListNode* p0=dummy;
     struct ListNode* cur=head;
-    struct ListNode* prev=NULL;    
+    struct ListNode* prev=dummy;    
     while(len_cnt>=2){
         len_cnt-=2;
         int cnt=2;
