@@ -6,18 +6,17 @@
  *     struct TreeNode *right;
  * };
  */
-struct TreeNode* searchBST(struct TreeNode* root, int val){
-    struct TreeNode* find=root;
-    while(find!=NULL){
-        if(find->val==val){
-            return find;
-        }
-        else if(find->val<val){
-            find=find->right;
-        }
-        else{
-            find=find->left;
-        }
+struct TreeNode* searchBST(struct TreeNode* root, int val) {
+    if(root==NULL){
+        return NULL;
     }
-    return NULL;
+    if(root->val==val){
+        return root;
+    }
+    if(val<root->val){
+        return searchBST(root->left,val);
+    }
+    else{
+        return searchBST(root->right,val);
+    }
 }
