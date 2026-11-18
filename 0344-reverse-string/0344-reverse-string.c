@@ -1,11 +1,12 @@
+void swap(char*s1,char*s2){
+    *s1=*s1^*s2;
+    *s2=*s1^*s2;
+    *s1=*s1^*s2;
+    return ;
+}
 void reverseString(char* s, int sSize) {
-    int left=0,right=sSize-1;
-    while(left<right){
-        char tmp = s[left];
-        s[left]=s[right];
-        s[right]=tmp;
-        left++;
-        right--;
+    for(int i=0;i<sSize/2;++i){
+        swap((s+i),(s+sSize-1-i));
     }
     return ;
 }
