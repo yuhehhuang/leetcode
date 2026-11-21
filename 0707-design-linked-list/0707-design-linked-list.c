@@ -1,142 +1,124 @@
-struct List_Node {
+struct linkedlist_node{
     int value;
-    struct List_Node* next; //紀錄下一個node
-    struct List_Node* prev; //紀錄前一個node
+    struct linkedlist_node *next;
 }typedef Node;
 
 typedef struct {
-    Node* head;
-    int size;
+    Node *head;   
 } MyLinkedList;
 
-
+//addat tail 跟addat index都有機會加在頭部,會需要更新head
+//所以直接呼叫addat head處理就不用function寫得太亂
 MyLinkedList* myLinkedListCreate() {
-    MyLinkedList*obj =(MyLinkedList*)malloc(sizeof(MyLinkedList));
+    MyLinkedList* obj =  (MyLinkedList*)malloc(sizeof(MyLinkedList)); 
     obj->head=NULL;
-    obj->size=0;
     return obj;
 }
 
 int myLinkedListGet(MyLinkedList* obj, int index) {
-    if(index>=obj->size){
-        return -1;
-    }
-    int cnt = 0;
-    Node* cur =obj->head;
+    Node *cur = obj->head;
     while(cur!=NULL){
-        if(cnt!=index){
-            cur=cur->next;
-            cnt++;
-        }
-        else if(cnt==index){
+        if(index==0){
             return cur->value;
         }
+        index--;
+        cur=cur->next;
     }
     return -1;
 }
 
 void myLinkedListAddAtHead(MyLinkedList* obj, int val) {
-    obj->size++;
-    Node* unit =(Node*)malloc(sizeof(Node));
-    unit->value = val;
-    //分兩種情況
-    //第一種目前沒有節點
+    Node * unit = (Node*)malloc(sizeof(Node));
+    unit->value=val;
     if(obj->head==NULL){
-        obj->head = unit;
-        unit->next=unit;
-        unit->prev=unit;
+        obj->head=unit;
+        unit->next=NULL;
     }
     else{
         unit->next=obj->head;
-        unit->prev=obj->head->prev;
-        obj->head->prev->next=unit;//原本最後一個元素的next連到new node;
-        obj->head->prev=unit; //原本第一個元素的prev連到new node;
-        obj->head = unit;
+        obj->head=unit;   
     }
-    return ;
+    return;
 }
 
 void myLinkedListAddAtTail(MyLinkedList* obj, int val) {
-    obj->size++;
-    Node* unit =(Node*)malloc(sizeof(Node));
-    unit->value = val;
     if(obj->head==NULL){
-        obj->head=unit;
-        unit->next=unit;
-        unit->prev=unit;
+        myLinkedListAddAtHead(obj,val);
+        return ;
     }
-    else{
-        unit->next=obj->head;
-        unit->prev=obj->head->prev;
-        obj->head->prev->next=unit;
-        obj->head->prev = unit;
+    Node *unit = (Node*)malloc(sizeof(Node));
+    unit->value=val;
+    unit->next = NULL;
+    Node *cur = obj->head;
+    while(cur!=NULL&&cur->next!=NULL){
+        cur=cur->next;
     }
+    //此時cur指向最後一個節點
+    cur->next=unit;
+    return ;
 }
 
 void myLinkedListAddAtIndex(MyLinkedList* obj, int index, int val) {
-    if(index>obj->size){
+    if(obj==NULL){
         return ;
     }
     if(index==0){
         myLinkedListAddAtHead(obj,val);
-        return;
+        return ;
     }
-    if(index==obj->size){
-        myLinkedListAddAtTail(obj,val);
-        return;
-    }
-    //double linked list index==size時效果跟index =0一樣
-    Node *cur=obj->head;
-    int cnt=index;
-    while(cnt--){
+    Node dummy;
+    dummy.next=obj->head;
+    Node* cur = &dummy;
+    while(cur){
+        if(index==0){
+           Node* unit=(Node*) malloc(sizeof(Node));
+           if(cur->next==NULL){
+            //case 加在尾巴
+            unit->next=NULL;
+           }
+           else{
+            //case 新增的位置後面有節點
+            unit->next = cur->next;
+           }
+           unit->value=val;
+           cur->next=unit;
+           return ;
+        }
         cur=cur->next;
+        index--;
     }
-    Node*unit=(Node*)malloc(sizeof(Node));
-    unit->value=val;
-    unit->next=cur;
-    unit->prev=cur->prev;
-    cur->prev->next=unit;
-    cur->prev=unit;
-        obj->size++;
-    return;
+    return ;
+
 }
 
 void myLinkedListDeleteAtIndex(MyLinkedList* obj, int index) {
-    if(index>=obj->size||obj->head==NULL){
+    if(obj==NULL||obj->head==NULL){
         return ;
     }
-    Node*cur=obj->head;
-    int cnt=index;
-    while(cnt--){
-        cur=cur->next;
+    Node dummy;
+    dummy.next=obj->head;
+    Node* cur = &dummy;
+    while(index>0&&cur!=NULL){
+        cur =cur->next;
+        index--;
     }
-    if(obj->size==1){
-        obj->head=NULL;
+    if(cur==NULL||cur->next==NULL){
+        return;
     }
-    else{
-        cur->next->prev=cur->prev;
-        cur->prev->next=cur->next;
-        if(cur==obj->head){
-            obj->head=cur->next;
-        }
-    }
-    obj->size--;
-    free(cur);
-    return;
+    Node*tmp = cur->next;
+    cur->next =cur->next->next;
+    free(tmp);
+    obj->head=dummy.next;
 }
 
 void myLinkedListFree(MyLinkedList* obj) {
-    if(obj==NULL){
-        return ;
-    }
-    Node*cur=obj->head;
-    for(int i=0;i<obj->size;++i){
-        Node* next=cur->next;
+    Node* cur =obj->head;
+    while(cur){
+        Node* tmp =cur->next;
         free(cur);
-        cur=next;
+        cur = tmp;
     }
     free(obj);
-    return;
 }
 
 /**
