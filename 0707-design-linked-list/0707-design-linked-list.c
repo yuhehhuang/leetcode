@@ -1,112 +1,141 @@
-
-typedef struct Node{
-    int val;
-    struct Node *next;
-}Node;
+struct List_Node {
+    int value;
+    struct List_Node* next; //紀錄下一個node
+    struct List_Node* prev; //紀錄前一個node
+}typedef Node;
 
 typedef struct {
-    Node* head ;
+    Node* head;
+    int size;
 } MyLinkedList;
 
 
 MyLinkedList* myLinkedListCreate() {
-    MyLinkedList* obj=(MyLinkedList*)malloc(sizeof(MyLinkedList));
+    MyLinkedList*obj =(MyLinkedList*)malloc(sizeof(MyLinkedList));
     obj->head=NULL;
+    obj->size=0;
     return obj;
 }
+
 int myLinkedListGet(MyLinkedList* obj, int index) {
-    Node *cur=obj->head;
-    for(int i=0;cur!=NULL;i++){
-        if(i==index){
-            return cur->val;
+    if(index>=obj->size){
+        return -1;
+    }
+    int cnt = 0;
+    Node* cur =obj->head;
+    while(cur!=NULL){
+        if(cnt!=index){
+            cur=cur->next;
+            cnt++;
         }
-        cur=cur->next;
+        else if(cnt==index){
+            return cur->value;
+        }
     }
     return -1;
 }
 
 void myLinkedListAddAtHead(MyLinkedList* obj, int val) {
-    Node *cur=obj->head;
-    Node* new_head=(Node*)malloc(sizeof(Node));
-    new_head->val=val;
-    new_head->next=cur;
-    obj->head=new_head;
+    obj->size++;
+    Node* unit =(Node*)malloc(sizeof(Node));
+    unit->value = val;
+    //分兩種情況
+    //第一種目前沒有節點
+    if(obj->head==NULL){
+        obj->head = unit;
+        unit->next=unit;
+        unit->prev=unit;
+    }
+    else{
+        unit->next=obj->head;
+        unit->prev=obj->head->prev;
+        obj->head->prev->next=unit;//原本最後一個元素的next連到new node;
+        obj->head->prev=unit; //原本第一個元素的prev連到new node;
+        obj->head = unit;
+    }
+    return ;
 }
 
 void myLinkedListAddAtTail(MyLinkedList* obj, int val) {
-    Node *cur = obj->head;
-    if(cur==NULL){
-        myLinkedListAddAtHead(obj,val);
-        return;
+    obj->size++;
+    Node* unit =(Node*)malloc(sizeof(Node));
+    unit->value = val;
+    if(obj->head==NULL){
+        obj->head=unit;
+        unit->next=unit;
+        unit->prev=unit;
     }
-    Node *tail=NULL;
-    while(cur!=NULL){
-        tail=cur;
-        cur=cur->next;
+    else{
+        unit->next=obj->head;
+        unit->prev=obj->head->prev;
+        obj->head->prev->next=unit;
+        obj->head->prev = unit;
     }
-    Node *last  = (Node*)malloc(sizeof(Node));
-    last->val=val;
-    last->next=NULL;
-    tail->next=last;
 }
 
 void myLinkedListAddAtIndex(MyLinkedList* obj, int index, int val) {
+    if(index>obj->size){
+        return ;
+    }
     if(index==0){
         myLinkedListAddAtHead(obj,val);
         return;
     }
+    if(index==obj->size){
+        myLinkedListAddAtTail(obj,val);
+        return;
+    }
+    //double linked list index==size時效果跟index =0一樣
     Node *cur=obj->head;
-    Node*tail=NULL;
-    int i=0;
-    for( i=0;cur!=NULL;++i){
-        if(i==index){
-            Node* add_node=(Node*)malloc(sizeof(Node));
-            tail->next=add_node;
-            add_node->val = val;
-            add_node->next=cur;
-            return;
-        }
-        tail=cur;
+    int cnt=index;
+    while(cnt--){
         cur=cur->next;
     }
-    if(i==index){
-        Node* add_node=(Node*)malloc(sizeof(Node));
-        add_node->val=val;
-        tail->next=add_node;
-        add_node->next=NULL;
-    }
-    return ;
+    Node*unit=(Node*)malloc(sizeof(Node));
+    unit->value=val;
+    unit->next=cur;
+    unit->prev=cur->prev;
+    cur->prev->next=unit;
+    cur->prev=unit;
+        obj->size++;
+    return;
 }
 
 void myLinkedListDeleteAtIndex(MyLinkedList* obj, int index) {
-    if(index==0&&obj->head!=NULL){
-        Node* tmp= obj->head;
-        Node* next=obj->head->next;
-        free(tmp);
-        obj->head=next;
-        return;
+    if(index>=obj->size||obj->head==NULL){
+        return ;
     }
-    Node *cur =obj->head;
-    Node *prev=NULL;
-    for(int i=0;cur;++i){
-        if(index==i){
-            prev->next=cur->next;
-            free(cur);
-            return;
-        }
-        prev=cur;
+    Node*cur=obj->head;
+    int cnt=index;
+    while(cnt--){
         cur=cur->next;
     }
-    return ;
+    if(obj->size==1){
+        obj->head=NULL;
+    }
+    else{
+        cur->next->prev=cur->prev;
+        cur->prev->next=cur->next;
+        if(cur==obj->head){
+            obj->head=cur->next;
+        }
+    }
+    obj->size--;
+    free(cur);
+    return;
 }
 
 void myLinkedListFree(MyLinkedList* obj) {
-    Node* cur=obj->head;
-    while(cur){
-        Node* tmp = cur;
-        cur=cur->next;
-        free(tmp);
+    if(obj==NULL){
+        return ;
     }
+    Node*cur=obj->head;
+    for(int i=0;i<obj->size;++i){
+        Node* next=cur->next;
+        free(cur);
+        cur=next;
+    }
+    free(obj);
     return;
 }
 
