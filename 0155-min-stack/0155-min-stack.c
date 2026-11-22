@@ -1,43 +1,52 @@
-typedef struct Node{
+struct stack_node{
     int val;
+    struct stack_node *next;
     int min;
-    struct Node *next;
-}Node;
+}typedef Node;
 
-
-typedef struct MinStack{
-    Node* head;
+typedef struct {
+    Node*head;
+    int size;
+    //maybe int min; (等等決定)
 } MinStack;
 
 
 MinStack* minStackCreate() {
-    MinStack* obj=(MinStack*)malloc(sizeof(MinStack));
+    MinStack *obj = (MinStack*)malloc(sizeof(MinStack));
+    obj->size=0;
     obj->head=NULL;
     return obj;
 }
 
 void minStackPush(MinStack* obj, int value) {
-    Node* new_node=(Node*)malloc(sizeof(Node));
-    new_node->val=value;
+    Node* unit = (Node*)malloc(sizeof(Node));
+    unit->val=value;
     if(obj->head==NULL){
-        new_node->next=NULL;
-        new_node->min=value;
-        obj->head=new_node;
-        return;
+        obj->head=unit;
+        unit->next=NULL;
+        unit->min=value;
     }
-    new_node->next=obj->head;
-    new_node->min=obj->head->min<=value?obj->head->min:value;
-    obj->head=new_node;
+    else{
+        if(obj->head->min<=value){
+            unit->min=obj->head->min;
+        }
+        else{
+            unit->min=value;
+        }
+        unit->next=obj->head;
+        obj->head=unit;
+
+    }
+    obj->size++;
     return;
 }
 
 void minStackPop(MinStack* obj) {
-    if(obj->head==NULL){
-        return;
-    }
-    Node* tmp=obj->head;
+    Node* tmp = obj->head;
     obj->head=obj->head->next;
     free(tmp);
+    obj->size--;
+    return;
 }
 
 int minStackTop(MinStack* obj) {
@@ -49,12 +58,15 @@ int minStackGetMin(MinStack* obj) {
 }
 
 void minStackFree(MinStack* obj) {
-    while(obj->head!=NULL){
-        Node* tmp=obj->head;
-        obj->head=tmp->next;
+    int cnt = obj->size;
+    Node*cur=obj->head;
+    for(int i=0;i<cnt;++i){
+        Node*tmp =cur;
+        cur=cur->next;
         free(tmp);
     }
     free(obj);
+    return ;
 }
 
 /**
