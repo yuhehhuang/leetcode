@@ -1,66 +1,24 @@
-typedef struct Node{
+struct Queue_Node{
     int val;
-    struct Node* next;
-}Node;
-
-
+    struct Queue_Node* next;
+    struct Queue_Node* prev;
+}typedef Node;
 typedef struct {
+    struct Queue_Node*front;
+    struct Queue_Node*rear;
     int size;
     int capacity;
-    Node* head;
-    Node* tail;
 } MyCircularQueue;
 
 
 MyCircularQueue* myCircularQueueCreate(int k) {
-    MyCircularQueue* obj=(MyCircularQueue*)malloc(sizeof(MyCircularQueue));
-    obj->size=0;
-    obj->capacity=k;
-    obj->head=NULL;
-    obj->tail=NULL;
+    MyCircularQueue * obj = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+    obj->front=NULL;
+    obj->rear = NULL;
+    obj->size = 0;
+    obj->capacity = k;
     return obj;
 }
-
-bool myCircularQueueEnQueue(MyCircularQueue* obj, int value) {
-    if(obj->size>=obj->capacity){
-        return false;
-    }
-    Node* new_node=(Node*)malloc(sizeof(Node));
-    new_node->val=value;
-    if(obj->size==0){
-        new_node->next=new_node;
-        obj->head=new_node;
-        obj->tail=new_node;
-    }
-    else{
-        obj->tail->next=new_node;
-        new_node->next=obj->head;
-        obj->tail=new_node;
-    }
-    obj->size++;
-    return true;
-}
-
-bool myCircularQueueDeQueue(MyCircularQueue* obj) {
-    if(obj->size<=0){
-        return false;
-    }
-    if(obj->size==1){
-        Node* tmp=obj->head;
-        obj->head=NULL;
-        obj->tail=NULL;
-        obj->size=0;
-        free(tmp);
-        return true;
-    }
-    Node* tmp=obj->head;
-    obj->head=obj->head->next;
-    obj->tail->next=obj->head;
-    free(tmp);
-    obj->size--;
-    return true;
-}
-
 bool myCircularQueueIsEmpty(MyCircularQueue* obj) {
     if(obj->size==0){
         return true;
@@ -69,39 +27,84 @@ bool myCircularQueueIsEmpty(MyCircularQueue* obj) {
 }
 
 bool myCircularQueueIsFull(MyCircularQueue* obj) {
-    if(obj->size==obj->capacity){
+    if(obj->capacity == obj->size){
         return true;
     }
     return false;
 }
 
+bool myCircularQueueEnQueue(MyCircularQueue* obj, int value) {
+    if(obj==NULL){
+        return false;
+    }
+    if(myCircularQueueIsFull(obj)){
+        //capacity is full cant push more data in.
+        return false;
+    }
+    Node *unit = (Node*)malloc(sizeof(Node));
+    unit->val=value;
+    if(myCircularQueueIsEmpty(obj)){
+        obj->front=unit;
+        obj->rear=unit;
+        unit->next=unit;
+        unit->prev=unit;
+    }
+    else{
+        unit->next=obj->front;
+        unit->prev=obj->rear;
+        obj->rear->next=unit;
+        obj->front->prev=unit;
+        obj->rear=unit;
+    }
+    obj->size++;
+    return true;
+}
+
+bool myCircularQueueDeQueue(MyCircularQueue* obj) {
+    if(obj==NULL){
+        return false;
+    }
+    if(myCircularQueueIsEmpty(obj)){
+        return false;
+    }
+    if(obj->size==1){
+        free(obj->front);
+        obj->front=NULL;
+        obj->rear=NULL;
+    }
+    else{
+        Node*tmp = obj->front;
+        obj->front=obj->front->next;
+        obj->front->prev=obj->rear;
+        obj->rear->next=obj->front;
+        free(tmp);
+    }
+    obj->size--;
+    return true;
+}
+
 int myCircularQueueFront(MyCircularQueue* obj) {
-    if(myCircularQueueIsEmpty(obj)==true){
+    if(myCircularQueueIsEmpty(obj)){
         return -1;
     }
-    return obj->head->val;
+    return obj->front->val;
 }
 
 int myCircularQueueRear(MyCircularQueue* obj) {
-    if(myCircularQueueIsEmpty(obj)==true){
+    if(myCircularQueueIsEmpty(obj)){
         return -1;
     }
-    return obj->tail->val;
+    return obj->rear->val;
 }
 
 
 void myCircularQueueFree(MyCircularQueue* obj) {
-    if(obj==NULL){
-        return;
-    }
-    if(obj->head!=NULL){
-        obj->tail->next=NULL;
-    }
-    Node* cur=obj->head;
-    while(cur){
-        Node* next_node=cur->next;
-        free(cur);
-        cur=next_node;
+    int k = obj->size;
+    Node*cur=obj->front;
+    for(int i=0;i<k;++i){
+        Node*tmp =cur;
+        cur=cur->next;
+        free(tmp);
     }
     free(obj);
 }
