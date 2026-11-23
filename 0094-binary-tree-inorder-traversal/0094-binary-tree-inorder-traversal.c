@@ -26,5 +26,9 @@ int* inorderTraversal(struct TreeNode* root, int* returnSize) {
     int*ans = (int*)malloc(sizeof(int)*100);
     *returnSize=0;
     dfs(root,returnSize,ans);
+    if(*returnSize>0){
+        int *shrunk = (int*)realloc(ans,sizeof(int)*(*returnSize));
+        ans = shrunk;
+    }
     return ans;
 }
