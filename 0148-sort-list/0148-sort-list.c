@@ -5,67 +5,64 @@
  *     struct ListNode *next;
  * };
  */
-struct ListNode* mid(struct ListNode* head){
-    struct ListNode* slow=head;
-    struct ListNode* fast=head;
-    struct ListNode* mid_prev=NULL;
-    while(fast&&fast->next){
-        mid_prev=slow;
-        slow=slow->next;
+struct ListNode *list_of_mid(struct ListNode* head){
+    struct ListNode *fast=head;
+    struct ListNode *slow= head;
+    struct ListNode *prev_of_slow=slow;
+    while(fast!=NULL&&fast->next!=NULL){
         fast=fast->next->next;
+        prev_of_slow=slow;
+        slow=slow->next;
     }
-    mid_prev->next=NULL;
+    prev_of_slow->next=NULL;
     return slow;
 }
-
-struct ListNode* merge_list(struct ListNode* head1,struct ListNode* head2){
-    struct ListNode* merge_head=NULL;
-    struct ListNode* merge_tmp;
-    while(head1&&head2){
-        if(head1->val<=head2->val){
-            if(merge_head==NULL){
-                merge_head=head1;
-                merge_tmp=merge_head;
-                head1=head1->next;
+struct ListNode *merge(struct ListNode* part1,struct ListNode*part2){
+    if(part1==NULL||part2==NULL){
+        return part1==NULL?part2:part1;
+    }
+    struct ListNode *head=NULL;
+    struct ListNode *cur = NULL;
+    while(part1&&part2){
+        if(part1->val<=part2->val){
+            if(head==NULL){
+                head=part1;
+                cur = part1;
             }
             else{
-                merge_tmp->next=head1;
-                merge_tmp=merge_tmp->next;
-                head1=head1->next;
+                cur->next=part1;
+                cur=cur->next;
             }
+            part1=part1->next;
         }
         else{
-            if(merge_head==NULL){
-                merge_head=head2;
-                merge_tmp=merge_head;
-                head2=head2->next;
+            if(head==NULL){
+                head=part2;
+                cur = part2;
             }
             else{
-                merge_tmp->next=head2;
-                merge_tmp=merge_tmp->next;
-                head2=head2->next;
+                cur->next=part2;
+                cur=cur->next;
             }
-        }   
+            part2=part2->next;
+        }
     }
-    while(head1){
-        merge_tmp->next=head1;
-        merge_tmp=merge_tmp->next;
-        head1=head1->next;
+    if(part1!=NULL){
+        cur->next=part1;
     }
-    while(head2){
-        merge_tmp->next=head2;
-        merge_tmp=merge_tmp->next;
-        head2=head2->next;
+    if(part2!=NULL){
+        cur->next=part2;
     }
-    return merge_head;
+    return head;
 }
 
 struct ListNode* sortList(struct ListNode* head) {
     if(head==NULL||head->next==NULL){
         return head;
     }
-    struct ListNode* middle=mid(head);
-    struct ListNode* first_part=sortList(head);
-    struct ListNode* second_part=sortList(middle);
-    return merge_list(first_part,second_part);
+    struct ListNode* mid = list_of_mid(head);
+    struct ListNode* head1= sortList(head);
+    struct ListNode* head2=sortList(mid);
+    struct ListNode* ans = merge(head1,head2);
+    return ans;
 }
