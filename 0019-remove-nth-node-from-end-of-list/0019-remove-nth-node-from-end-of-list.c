@@ -6,25 +6,26 @@
  * };
  */
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
-    struct ListNode* dummy = malloc(sizeof(struct ListNode));
-    dummy->next=head;
-    dummy->val=0;
-    struct ListNode* tmp =head;
-    int len=0;
-    while(tmp){
-        len++;
-        tmp=tmp->next;
+    if(head==NULL){
+        return NULL;
     }
-
-    struct ListNode* prev=dummy;
-    int move_cnt=len-n;
-    while(move_cnt--){
-        prev=prev->next;
+    struct ListNode * cur = head;
+    int cnt =0;
+    // (cnt-n+1)-th node
+    while(cur){
+        cnt++;
+        cur=cur->next;
     }
-    struct ListNode* target=prev->next;
-    prev->next=target->next;
-    free(target);
-    struct ListNode* newhead=dummy->next;
-    free(dummy);
-    return newhead;
+    struct ListNode dummy; 
+    dummy.next = head;
+    // (cnt-n+1)-th node =(cnt-n)-index node 
+    int index = cnt-n;
+    struct ListNode *iter = &dummy;
+    while(index--){
+        iter= iter->next;
+    }
+    struct ListNode *tmp = iter->next;
+    iter->next = iter->next->next;
+    free(tmp);
+    return dummy.next;
 }
