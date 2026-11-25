@@ -5,10 +5,11 @@
  *     struct ListNode *next;
  * };
  */
-struct ListNode *list_of_mid(struct ListNode* head){
-    struct ListNode *fast=head;
-    struct ListNode *slow= head;
-    struct ListNode *prev_of_slow=slow;
+
+struct ListNode *list_of_mid(struct ListNode*head){
+    struct ListNode* fast=head;
+    struct ListNode* slow =head;
+    struct ListNode* prev_of_slow=slow;
     while(fast!=NULL&&fast->next!=NULL){
         fast=fast->next->next;
         prev_of_slow=slow;
@@ -17,17 +18,18 @@ struct ListNode *list_of_mid(struct ListNode* head){
     prev_of_slow->next=NULL;
     return slow;
 }
-struct ListNode *merge(struct ListNode* part1,struct ListNode*part2){
+
+struct ListNode* merge(struct ListNode* part1,struct ListNode* part2){
     if(part1==NULL||part2==NULL){
         return part1==NULL?part2:part1;
     }
-    struct ListNode *head=NULL;
-    struct ListNode *cur = NULL;
-    while(part1&&part2){
+    struct ListNode* head=NULL;
+    struct ListNode* cur = NULL;
+    while(part1!=NULL&&part2!=NULL){
         if(part1->val<=part2->val){
             if(head==NULL){
                 head=part1;
-                cur = part1;
+                cur=part1;
             }
             else{
                 cur->next=part1;
@@ -38,7 +40,7 @@ struct ListNode *merge(struct ListNode* part1,struct ListNode*part2){
         else{
             if(head==NULL){
                 head=part2;
-                cur = part2;
+                cur=part2;
             }
             else{
                 cur->next=part2;
@@ -61,8 +63,8 @@ struct ListNode* sortList(struct ListNode* head) {
         return head;
     }
     struct ListNode* mid = list_of_mid(head);
-    struct ListNode* head1= sortList(head);
-    struct ListNode* head2=sortList(mid);
-    struct ListNode* ans = merge(head1,head2);
-    return ans;
+    struct ListNode* part1 = sortList(head);
+    struct ListNode* part2 = sortList(mid);
+    struct ListNode* ans = merge(part1,part2);
+    return ans;    
 }
