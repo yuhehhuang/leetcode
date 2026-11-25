@@ -5,32 +5,24 @@
  *     struct ListNode *next;
  * };
  */
-
 struct ListNode* swapPairs(struct ListNode* head) {
-    struct ListNode* tmp=head;
-    int len_cnt=0;
-    while(tmp){
-        tmp=tmp->next;
-        len_cnt++;
+    if(head==NULL){
+        return NULL;
     }
-    struct ListNode* dummy=(struct ListNode*)malloc(sizeof(struct ListNode));
+    struct ListNode *dummy = malloc(sizeof(struct ListNode));
     dummy->next=head;
-    struct ListNode* p0=dummy;
-    struct ListNode* cur=head;
-    struct ListNode* prev=dummy;    
-    while(len_cnt>=2){
-        len_cnt-=2;
-        int cnt=2;
-        struct ListNode* p0_next=p0->next;
-        while(cnt--){
-            struct ListNode* next=cur->next;
-            cur->next=prev;
-            prev=cur;
-            cur=next;
-        }
-        p0->next->next=cur;
-        p0->next=prev;
-        p0=p0_next;
+    struct ListNode *p0 = dummy;
+    struct ListNode *p1 = head;
+    while(p1&&p1->next){
+        struct ListNode *p2=p1->next;
+        struct ListNode *p3=p2->next;
+        p0->next=p2;
+        p2->next=p1;
+        p1->next=p3;
+
+        p0=p1;
+        p1=p3;
     }
+
     return dummy->next;
 }
